@@ -4,20 +4,32 @@ import { getImageFromApi } from '../API/TMDBApi'
 
 
     class FilmItem extends React.Component {
+
+        _displayFavoriteImage() {
+            if (this.props.isFilmFavorite) {
+                // Si la props isFilmFavorite vaut true, on affiche le coeur
+                return (
+                    <Image
+                        style= {styles.favorite_image}
+                        source={require('../Images/ic_favorite.png')}
+                    />
+                )
+            }
+        }
         render() {
 
             const film = this.props.film
 
             const displayDetailForFilm = this.props.displayDetailForFilm
 
-// De ligne 9 a 11 egual aussi a const { film, displayDetailForFilm } = this.props
+// De ligne 21 a 23 egual aussi a const { film, displayDetailForFilm } = this.props
             
             
             return(
 
                 <TouchableOpacity 
-            onPress={() => displayDetailForFilm(film.id) }
-                style={styles.main_container}>
+                    onPress={() => displayDetailForFilm(film.id) }
+                    style={styles.main_container}>
 
                     <Image
                         style={styles.image}
@@ -27,6 +39,9 @@ import { getImageFromApi } from '../API/TMDBApi'
                 <View style={styles.content_container}>
 
                     <View style={styles.header_container}>
+
+                        {this._displayFavoriteImage()}
+
                         <Text style={styles.title_text}>{film.title} </Text>
                         <Text style={styles.vote_text}> {film.vote_average} </Text>
                     </View>
@@ -87,7 +102,7 @@ import { getImageFromApi } from '../API/TMDBApi'
 
             vote_text: {
 
-                fontSize: 12,
+                fontSize: 26,
                 fontWeight: 'bold',
                 color: '#666666'
             },
@@ -114,6 +129,12 @@ import { getImageFromApi } from '../API/TMDBApi'
                 textAlign: 'right'
 
             },
+
+            favorite_image: {
+                width: 25,
+                height: 25,
+                marginRight: 5
+            }
         })
 
 export default FilmItem

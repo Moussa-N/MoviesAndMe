@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Button, TextInput, FlatList, Text, ActivityIndicator } from 'react-native'
 import FilmItem from './FilmItem'
 import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi'
+import { connect } from 'react-redux'
 
     class Search extends React.Component {
 
@@ -18,7 +19,7 @@ import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi'
                     isLoading: false // Par defaut a false car il n'y a pas de chargement tant qu'on ne lance pas de recherche
             }
 
-            this.searchedText= ""
+           // this.searchedText= ""
         }
 
             _loadFilms() {
@@ -94,17 +95,27 @@ import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi'
 
                 <FlatList
                     data={this.state.films}
+
+                    extraData= { this.props.favoritesFilm }
+    // extraData pour expliquer a la FlatList aue d'autres donnees doivent etre prises en compte si on lui demande de se re-rendre
+                    
                     keyExtractor={(item) => item.id.toString()}
                     
-                    onEndReachedThreshold={0.5}
+                    renderItem={({item}) => 
+                        <FilmItem 
+                            film={item} 
+        // Ajout d'une props isFilmFavorite pour indiquer a l'item d'afficher un coeur ou non
+                            isFilmFavorite={(this.props.favoritesFilm.findIndex(film => film.id === item.id) !== -1) ? true : false}
+                            displayDetailForFilm={this._displayDetailForFilm}/>}
+                />
+
+                onEndReachedThreshold={0.5}
                     onEndReached={() => {
                         if (this.page < this.totalPages) {
 
                             this._loadFilms()
                         }
                     }}
-                    renderItem={({item}) => <FilmItem film={item} displayDetailForFilm={this._displayDetailForFilm}/>}
-                />
 
                 {this._displayLoading()}
             
@@ -142,4 +153,11 @@ import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi'
     }
 })
 
-export default Search
+
+const mapStateToProps = state => {
+    return {
+        favoritesFilm: state.favoritesFilm
+    }
+}
+
+export default connect(mapStateToProps)(Search)
