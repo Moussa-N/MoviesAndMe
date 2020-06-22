@@ -8,7 +8,7 @@ function toggleFavorite(state = initialState, action) {
         case 'TOGGLE_FAVORITE':
             const favoriteFilmIndex = state.favoriteFilm.findIndex(item => item.id === action.value.id)
             if (favoriteFilmIndex !== -1) {
-                // Supression
+                // Suppression
                 nextState = {
                     ...state,
                     favoritesFilm: state.favoritesFilm.filter( (item, index) => index !== favoriteFilmIndex)
