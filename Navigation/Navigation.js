@@ -32,7 +32,7 @@ const MoviesTabNavigator = createBottomTabNavigator ({
     Search: {
         screen: SearchStackNavigator,
         navigationOptions: {
-            tabBarOptions: () => {
+            tabBarOptions: () => { //rendu icone par les images
                 return <Image
                     source={ require('../Images/ic_search.png')}
                     style= {Style.icon} />
@@ -52,8 +52,10 @@ const MoviesTabNavigator = createBottomTabNavigator ({
     },
 
     tabBarOptions: {
-        showLabel: false,
-        showIcon: true
+        showLabel: false, // On masque les titre
+        showIcon: true, //On affiche les images
+        activeBackgroundColor: "#DDDDDD",
+        inactiveBackgroundColor: "FFFFFF"
     }
 })
 
